@@ -51,6 +51,9 @@
             <div class="question-counter">
                 <span id="currentQuestion">1</span> / <span id="totalQuestions">0</span>
             </div>
+            <div class="header-actions">
+                <button class="btn btn-view-list-small" onclick="showQuestionList()">📋 Xem danh sách</button>
+            </div>
         </div>
 
         <div class="quiz-content" id="quizContent">
@@ -82,6 +85,54 @@
                 <button class="btn btn-restart" onclick="restartQuiz()">Làm lại</button>
                 <button class="btn btn-retry-wrong" onclick="retryWrongAnswers()" id="retryWrongBtn">Làm lại câu sai</button>
                 <button class="btn btn-review" onclick="reviewAnswers()">Xem lại đáp án</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal hiển thị danh sách câu hỏi -->
+    <div id="questionListModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Danh sách câu hỏi và đáp án</h2>
+                <span class="close-modal" onclick="closeQuestionList()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="list-filters">
+                    <label for="listChapterSelect">Chọn chương:</label>
+                    <select id="listChapterSelect" onchange="updateQuestionList()">
+                        <option value="all">Tất cả chương</option>
+                        <option value="chuong2">Chương 2</option>
+                        <option value="chuong3">Chương 3</option>
+                        <option value="chuong4">Chương 4</option>
+                        <option value="chuong5">Chương 5</option>
+                        <option value="chuong6">Chương 6</option>
+                        <option value="chuong7">Chương 7</option>
+                    </select>
+                    <div class="list-filter-checkboxes">
+                        <label class="filter-checkbox">
+                            <input type="checkbox" id="listFilterTime" onchange="updateQuestionList()">
+                            <span>Câu có mốc thời gian</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" id="listFilterDaiHoi" onchange="updateQuestionList()">
+                            <span>Câu về Đại hội Đảng</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" id="listFilterNhanVat" onchange="updateQuestionList()">
+                            <span>Câu về nhân vật lịch sử</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" id="listFilterVietNam" onchange="updateQuestionList()">
+                            <span>Câu về Việt Nam</span>
+                        </label>
+                    </div>
+                    <div class="list-count">
+                        <span id="listCount">0</span> câu hỏi
+                    </div>
+                </div>
+                <div class="question-list" id="questionList">
+                    <!-- Danh sách câu hỏi sẽ được hiển thị ở đây -->
+                </div>
             </div>
         </div>
     </div>

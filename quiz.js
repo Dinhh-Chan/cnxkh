@@ -9385,6 +9385,192 @@ function onChapterChange(chapterKey) {
     applyFilters();
 }
 
+// Hiển thị modal danh sách câu hỏi
+function showQuestionList() {
+    // Khởi tạo tags nếu chưa có
+    initializeTags();
+    
+    // Đồng bộ filter từ quiz chính
+    const chapterSelect = document.getElementById('chapterSelect');
+    const listChapterSelect = document.getElementById('listChapterSelect');
+    if (chapterSelect && listChapterSelect) {
+        listChapterSelect.value = chapterSelect.value;
+    }
+    
+    const filterTime = document.getElementById('filterTime');
+    const listFilterTime = document.getElementById('listFilterTime');
+    if (filterTime && listFilterTime) {
+        listFilterTime.checked = filterTime.checked;
+    }
+    
+    const filterDaiHoi = document.getElementById('filterDaiHoi');
+    const listFilterDaiHoi = document.getElementById('listFilterDaiHoi');
+    if (filterDaiHoi && listFilterDaiHoi) {
+        listFilterDaiHoi.checked = filterDaiHoi.checked;
+    }
+    
+    const filterNhanVat = document.getElementById('filterNhanVat');
+    const listFilterNhanVat = document.getElementById('listFilterNhanVat');
+    if (filterNhanVat && listFilterNhanVat) {
+        listFilterNhanVat.checked = filterNhanVat.checked;
+    }
+    
+    const filterVietNam = document.getElementById('filterVietNam');
+    const listFilterVietNam = document.getElementById('listFilterVietNam');
+    if (filterVietNam && listFilterVietNam) {
+        listFilterVietNam.checked = filterVietNam.checked;
+    }
+    
+    // Hiển thị modal
+    document.getElementById('questionListModal').style.display = 'block';
+    
+    // Cập nhật danh sách
+    updateQuestionList();
+}
+
+// Đóng modal
+function closeQuestionList() {
+    document.getElementById('questionListModal').style.display = 'none';
+}
+
+// Cập nhật danh sách câu hỏi theo filter
+function updateQuestionList() {
+    // Khởi tạo tags nếu chưa có
+    initializeTags();
+    
+    // Lấy giá trị từ các filter
+    const chapterKey = document.getElementById('listChapterSelect').value;
+    const filterTime = document.getElementById('listFilterTime').checked;
+    const filterDaiHoi = document.getElementById('listFilterDaiHoi').checked;
+    const filterNhanVat = document.getElementById('listFilterNhanVat').checked;
+    const filterVietNam = document.getElementById('listFilterVietNam').checked;
+    
+    // Lọc theo chương
+    const chapter = chapterConfigs.find(c => c.key === chapterKey) || chapterConfigs[0];
+    
+    let filteredQuestions;
+    if (chapter.start === null || chapter.end === null) {
+        filteredQuestions = [...questions];
+    } else {
+        filteredQuestions = questions.filter(q => q.id >= chapter.start && q.id <= chapter.end);
+    }
+    
+    // Lọc theo các tiêu chí khác
+    if (filterTime || filterDaiHoi || filterNhanVat || filterVietNam) {
+        filteredQuestions = filteredQuestions.filter(q => {
+            const tags = q.tags || [];
+            if (filterTime && tags.includes('time')) return true;
+            if (filterDaiHoi && tags.includes('daihoi')) return true;
+            if (filterNhanVat && tags.includes('nhanvat')) return true;
+            if (filterVietNam && tags.includes('vietnam')) return true;
+            return false;
+        });
+    }
+    
+    // Cập nhật số lượng
+    document.getElementById('listCount').textContent = filteredQuestions.length;
+    
+    // Hiển thị danh sách
+    displayQuestionList(filteredQuestions);
+}
+
+// Hiển thị danh sách câu hỏi
+function displayQuestionList(questionsList) {
+    const listContainer = document.getElementById('questionList');
+    listContainer.innerHTML = '';
+    
+    if (questionsList.length === 0) {
+        listContainer.innerHTML = '<p style="text-align: center; padding: 40px; color: #666;">Không có câu hỏi nào phù hợp với bộ lọc đã chọn.</p>';
+        return;
+    }
+    
+    questionsList.forEach((question, index) => {
+        const questionItem = document.createElement('div');
+        questionItem.className = 'list-question-item';
+        
+        // Header với số câu và tags
+        const header = document.createElement('div');
+        header.className = 'list-question-header';
+        
+        const questionNumber = document.createElement('div');
+        questionNumber.className = 'list-question-number';
+        questionNumber.textContent = `Câu ${question.id}`;
+        
+        const questionText = document.createElement('div');
+        questionText.className = 'list-question-text';
+        questionText.textContent = question.question;
+        
+        header.appendChild(questionNumber);
+        header.appendChild(questionText);
+        
+        // Tags
+        const tagsContainer = document.createElement('div');
+        tagsContainer.className = 'list-question-tags';
+        const tags = question.tags || [];
+        if (tags.length > 0) {
+            tags.forEach(tag => {
+                const tagElement = document.createElement('span');
+                tagElement.className = 'list-tag';
+                const tagLabels = {
+                    'time': '⏰ Mốc thời gian',
+                    'daihoi': '🏛️ Đại hội Đảng',
+                    'nhanvat': '👤 Nhân vật',
+                    'vietnam': '🇻🇳 Việt Nam'
+                };
+                tagElement.textContent = tagLabels[tag] || tag;
+                tagsContainer.appendChild(tagElement);
+            });
+        }
+        
+        // Options
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'list-options';
+        
+        question.options.forEach((option, optionIndex) => {
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'list-option';
+            
+            if (optionIndex === question.correct) {
+                optionDiv.classList.add('correct-answer');
+            }
+            
+            const optionLabel = document.createElement('span');
+            optionLabel.className = 'list-option-label';
+            optionLabel.textContent = String.fromCharCode(65 + optionIndex) + '.';
+            
+            const optionText = document.createElement('span');
+            optionText.className = 'list-option-text';
+            optionText.textContent = option;
+            
+            optionDiv.appendChild(optionLabel);
+            optionDiv.appendChild(optionText);
+            
+            if (optionIndex === question.correct) {
+                const badge = document.createElement('span');
+                badge.className = 'correct-badge';
+                badge.textContent = 'Đáp án đúng';
+                optionDiv.appendChild(badge);
+            }
+            
+            optionsContainer.appendChild(optionDiv);
+        });
+        
+        questionItem.appendChild(header);
+        questionItem.appendChild(tagsContainer);
+        questionItem.appendChild(optionsContainer);
+        
+        listContainer.appendChild(questionItem);
+    });
+}
+
+// Đóng modal khi click bên ngoài
+window.onclick = function(event) {
+    const modal = document.getElementById('questionListModal');
+    if (event.target === modal) {
+        closeQuestionList();
+    }
+}
+
 // Khởi tạo khi trang được tải
 document.addEventListener('DOMContentLoaded', initQuiz);
 
