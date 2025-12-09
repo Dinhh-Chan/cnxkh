@@ -1,0 +1,12 @@
+{
+  "id": 1,
+  "name": "Nguyễn Văn A",
+  "title": "Lập trình viên Full Stack",
+  "email": "nguyenvana@example.com",
+  "phone": "0123 456 789",
+  "address": "123 Đường ABC, Quận XYZ, TP.HCM",
+  "birthday": "01/01/1990",
+  "avatar": "https://i.pravatar.cc/150?img=12",
+  "skills": ["HTML", "CSS", "JavaScript", "Python", "React", "Node.js"],
+  "bio": "Tôi là một lập trình viên đam mê với công nghệ web. Tôi có kinh nghiệm trong việc phát triển các ứng dụng web hiện đại và luôn học hỏi những công nghệ mới. Tôi thích giải quyết các vấn đề phức tạp và tạo ra những sản phẩm chất lượng cao."
+} 

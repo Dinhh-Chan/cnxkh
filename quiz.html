@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trắc nghiệm Chủ nghĩa Mác - Lênin</title>
+    <link rel="stylesheet" href="quiz.css">
+</head>
+<body>
+    <div class="container">
+        <div class="quiz-header">
+            <h1>Trắc nghiệm Chủ nghĩa Mác - Lênin</h1>
+            <div class="filters-container">
+                <div class="chapter-filter">
+                    <label for="chapterSelect">Chọn chương:</label>
+                    <select id="chapterSelect" onchange="applyFilters()">
+                        <option value="all">Tất cả chương</option>
+                        <option value="chuong2">Chương 2</option>
+                        <option value="chuong3">Chương 3</option>
+                        <option value="chuong4">Chương 4</option>
+                        <option value="chuong5">Chương 5</option>
+                        <option value="chuong6">Chương 6</option>
+                        <option value="chuong7">Chương 7</option>
+                    </select>
+                </div>
+                <div class="topic-filter">
+                    <label>Lọc theo chủ đề:</label>
+                    <div class="filter-checkboxes">
+                        <label class="filter-checkbox">
+                            <input type="checkbox" id="filterTime" onchange="applyFilters()">
+                            <span>Câu có mốc thời gian</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" id="filterDaiHoi" onchange="applyFilters()">
+                            <span>Câu về Đại hội Đảng</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" id="filterNhanVat" onchange="applyFilters()">
+                            <span>Câu về nhân vật lịch sử</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" id="filterVietNam" onchange="applyFilters()">
+                            <span>Câu về Việt Nam</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="question-counter">
+                <span id="currentQuestion">1</span> / <span id="totalQuestions">0</span>
+            </div>
+        </div>
+
+        <div class="quiz-content" id="quizContent">
+            <div class="question-section">
+                <h2 class="question-text" id="questionText"></h2>
+                <div class="options" id="options"></div>
+            </div>
+
+            <div class="quiz-controls">
+                <button class="btn btn-prev" id="prevBtn" onclick="previousQuestion()">Câu trước</button>
+                <button class="btn btn-next" id="nextBtn" onclick="nextQuestion()">Câu tiếp theo</button>
+                <button class="btn btn-submit" id="submitBtn" onclick="submitQuiz()" style="display: none;">Nộp bài</button>
+            </div>
+        </div>
+
+        <div class="result-section" id="resultSection" style="display: none;">
+            <h2>Kết quả trắc nghiệm</h2>
+            <div class="score-display">
+                <div class="score-circle">
+                    <span class="score-number" id="scoreNumber">0</span>
+                    <span class="score-label">điểm</span>
+                </div>
+                <div class="score-details">
+                    <p>Số câu đúng: <span id="correctAnswers">0</span> / <span id="totalAnswers">92</span></p>
+                    <p>Tỷ lệ: <span id="percentage">0</span>%</p>
+                </div>
+            </div>
+            <div class="result-actions">
+                <button class="btn btn-restart" onclick="restartQuiz()">Làm lại</button>
+                <button class="btn btn-retry-wrong" onclick="retryWrongAnswers()" id="retryWrongBtn">Làm lại câu sai</button>
+                <button class="btn btn-review" onclick="reviewAnswers()">Xem lại đáp án</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="quiz.js"></script>
+</body>
+</html>
+
